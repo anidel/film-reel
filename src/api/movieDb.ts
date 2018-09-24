@@ -2,7 +2,7 @@ import { format } from "url";
 
 const apiKey =
   process.env.REACT_APP_MOVIE_DB_API_KEY ||
-  "enter api key as MOVIE_DB_API_KEY env";
+  "1170927734ceb430f360210a85a30948"
 const MOVIE_DB_API_VERSION = "3";
 const MOVIE_DB_BASEURL = "https://api.themoviedb.org/";
 
