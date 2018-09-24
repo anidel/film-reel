@@ -19,6 +19,7 @@ const mapDispatchToProps: IDispatchProps = {
 
 class HomeComponent extends React.PureComponent<IHomeProps & IDispatchProps> {
   public componentDidMount() {
+    // As soon as we load the app, initialise it
     this.props.onInitialise();
   }
 

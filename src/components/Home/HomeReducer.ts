@@ -42,12 +42,14 @@ export const homeReducer = function reduce(
           loadingConfiguration: true,
           loadingGenres: true
         },
+        // MovieDB has a `/configuration` endpoint containing some useful stuff for us
         Cmd.list([
           Cmd.run(fetchMovieDbConfiguration, {
             args: [],
             failActionCreator: fetchMovieDbConfigurationFailed,
             successActionCreator: fetchMovieDbConfigurationSuccess
           }),
+          // Also, we pre-load movie genres list here
           Cmd.run(fetchMovieDbGenres, {
             args: [],
             failActionCreator: fetchMovieDbGenresFailed,
@@ -66,7 +68,7 @@ export const homeReducer = function reduce(
     case FETCH_MOVIE_DB_GENRES_SUCCESS: {
       return {
         ...state,
-        loadingConfiguration: false,
+        loadingGenres: false,
         genres: action.payload.genres
       };
     }

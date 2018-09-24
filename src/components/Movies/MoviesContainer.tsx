@@ -57,8 +57,24 @@ class MoviesWrapper extends React.PureComponent<
     nextProps: IMoviesProps & IMoviesWrapperProps & IDispatchProps
   ) {
     if (this.props.searchText !== nextProps.searchText) {
-      this.onPerformSearch(nextProps.searchText);
+      // this happens when the user has emptied the search input
+      // Let's just show something.
+      if (nextProps.searchText === "") {
+        this.props.onLoadDiscoverMovies();
+      } else {
+        this.onPerformSearch(nextProps.searchText);
+      }
     }
+  }
+
+  public shouldComponentUpdate(
+    nextProps: IMoviesProps & IMoviesWrapperProps & IDispatchProps
+  ) {
+    if (this.props.searchText.length > 0 && nextProps.searchText === "") {
+      return false;
+    }
+
+    return true;
   }
 
   public render() {
