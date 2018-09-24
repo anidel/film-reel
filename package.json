@@ -2,6 +2,7 @@
   "name": "film-reel",
   "version": "0.1.0",
   "private": true,
+  "homepage" : "http://anidel.github.io/film-reel",
   "dependencies": {
     "@types/lodash-es": "^4.17.1",
     "@types/react-redux": "^6.0.9",
