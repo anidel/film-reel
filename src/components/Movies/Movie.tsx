@@ -15,19 +15,53 @@ const MovieLayout = styled.div`
   flex-direction: column;
   width: 200px;
   margin-top: 10px;
+  margin-bottom: 20px;
+`;
+
+const Title = styled.div`
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 5px;
+`;
+
+const Date = styled.div`
+  font-weight: 500;
+  font-size: 12px;
+`;
+
+const Genres = styled.div`
+  font-weight: 300;
+  font-size: 12px;
+  flex-wrap: wrap;
+`;
+
+const MovieMetadata = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-left: 7px;
+`;
+
+const Bold = styled.span`
+  font-weight: 600;
 `;
 
 export const Movie: React.SFC<IMovieProps> = ({ movie, genres }) => (
   <MovieLayout>
     <MoviePoster movie={movie} />
-    <div>Title: {movie.title}</div>
-    <div>Released: {movie.release_date}</div>
-    <div>
-      Genres:{" "}
-      {movie.genre_ids
-        .map(genreId => genres.find(genre => genre.id === genreId))
-        .map(genre => (genre ? genre.name : ""))
-        .join(",")}
-    </div>
+    <MovieMetadata>
+      <Title>{movie.title}</Title>
+      <Date>
+        <Bold>Released: </Bold>
+        {movie.release_date}
+      </Date>
+      <Genres>
+        <Bold>Genres: </Bold>
+        {movie.genre_ids
+          .map(genreId => genres.find(genre => genre.id === genreId))
+          .map(genre => (genre ? genre.name : ""))
+          .join(",")}
+      </Genres>
+    </MovieMetadata>
   </MovieLayout>
 );
