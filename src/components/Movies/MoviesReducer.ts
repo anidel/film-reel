@@ -1,4 +1,8 @@
-import { IMovieDBMovie, fetchMovieDbDiscover } from "../../api/movieDb";
+import {
+  IMovieDBMovie,
+  fetchMovieDbDiscover,
+  fetchMovieDbSearch
+} from "../../api/movieDb";
 import { loop, Cmd, Loop } from "redux-loop";
 import {
   MoviesAction,
@@ -6,7 +10,12 @@ import {
   LOAD_DISCOVER_MOVIES_SUCCESS,
   LOAD_DISCOVER_MOVIES_FAILED,
   onLoadDiscoverMoviesSuccess,
-  onLoadDiscoverMoviesFailed
+  onLoadDiscoverMoviesFailed,
+  ON_PERFORM_SEARCH,
+  onPerformSearchSuccess,
+  onPerformSearchFailed,
+  ON_PERFORM_SEARCH_SUCCESS,
+  ON_PERFORM_SEARCH_FAILED
 } from "src/components/Movies/MoviesActions";
 
 export interface IMoviesStore {
@@ -26,6 +35,33 @@ export const moviesReducer = function reduce(
   action: MoviesAction
 ): IMoviesStore | Loop<IMoviesStore, MoviesAction> {
   switch (action.type) {
+    case ON_PERFORM_SEARCH: {
+      return loop<IMoviesStore, MoviesAction>(
+        {
+          ...state,
+          loading: true
+        },
+        Cmd.run(fetchMovieDbSearch, {
+          args: [action.payload.searchText],
+          successActionCreator: onPerformSearchSuccess,
+          failActionCreator: onPerformSearchFailed
+        })
+      );
+    }
+    case ON_PERFORM_SEARCH_FAILED: {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error
+      };
+    }
+    case ON_PERFORM_SEARCH_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        movies: action.payload.movies
+      };
+    }
     case ON_LOAD_DISCOVER_MOVIES: {
       return loop<IMoviesStore, MoviesAction>(
         {
@@ -39,7 +75,6 @@ export const moviesReducer = function reduce(
         })
       );
     }
-
     case LOAD_DISCOVER_MOVIES_FAILED:
       return {
         ...state,

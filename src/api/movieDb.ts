@@ -1,4 +1,4 @@
-import { resolve } from "url";
+import { format } from "url";
 
 const apiKey =
   process.env.REACT_APP_MOVIE_DB_API_KEY ||
@@ -52,11 +52,25 @@ export interface IMovieDBGenres {
   genres: IMovieDBGenre[];
 }
 
-const fetchMovieDbUrlFor = (path: string): string =>
-  resolve(
-    MOVIE_DB_BASEURL,
-    `${MOVIE_DB_API_VERSION}/${path}?api_key=${apiKey}`
-  );
+export interface IMovieDBSearchResponse {
+  page: number;
+  total_results: number;
+  total_pages: number;
+  results: IMovieDBMovie[];
+}
+
+const fetchMovieDbUrlFor = (path: string, args?: object): string =>
+  format({
+    href: MOVIE_DB_BASEURL,
+    host: "api.themoviedb.org",
+    protocol: "https",
+    pathname: `${MOVIE_DB_API_VERSION}/${path}`,
+    query: {
+      api_key: apiKey,
+      page: 1,
+      ...args
+    }
+  });
 
 function doFetch<T>(url: string): Promise<T> {
   return fetch(url).then(response => response.json());
@@ -71,4 +85,13 @@ export const fetchMovieDbDiscover = (args: string) =>
 export const fetchMovieDbGenres = () =>
   doFetch<IMovieDBGenres>(fetchMovieDbUrlFor("genre/movie/list")).then(
     response => response.genres
+  );
+
+export const fetchMovieDbSearch = (searchText: string) =>
+  doFetch<IMovieDBSearchResponse>(
+    fetchMovieDbUrlFor("search/movie", {
+      query: searchText,
+      language: "en-UK",
+      include_adult: false
+    })
   );

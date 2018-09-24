@@ -1,10 +1,17 @@
 import * as React from "react";
 import ImageLoader from "react-loading-image";
 import ReactLoading from "react-loading";
+import styled from "styled-components";
 
 export interface IMoviePosterComponentProps {
   url: string;
 }
+
+const Image = styled(ImageLoader)`
+  display: flex;
+  align-self: center;
+  margin-bottom: 10px;
+`;
 
 const renderLoading = () => <ReactLoading type={"cylon"} color="#000" />;
 const renderError = () => <div />;
@@ -13,4 +20,4 @@ const renderError = () => <div />;
 // loading statuses, errors etc.
 export const MoviePosterComponent: React.SFC<IMoviePosterComponentProps> = ({
   url
-}) => <ImageLoader src={url} loading={renderLoading} error={renderError} />;
+}) => <Image src={url} loading={renderLoading} error={renderError} />;
