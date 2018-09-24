@@ -11,7 +11,7 @@ function getKey<T extends IStore, K extends keyof IHomeStore>(
 }
 
 export const getInitialising = (store: IStore): boolean =>
-  getKey(store, "loadingConfiguration") && getKey(store, "loadingGenres");
+  getKey(store, "loadingConfiguration") || getKey(store, "loadingGenres");
 
 export const getGenres = (store: IStore): IHomeStore["genres"] =>
   getKey(store, "genres");
