@@ -5693,6 +5693,14 @@ react-is@^16.3.1:
   version "16.5.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.5.2.tgz#e2a7b7c3f5d48062eb769fcb123505eb928722e3"
 
+react-loading-image@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/react-loading-image/-/react-loading-image-0.5.0.tgz#f5ab33c03763ea4c1b80f8293c22b057d299ff69"
+
+react-loading@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-loading/-/react-loading-2.0.3.tgz#e8138fb0c3e4674e481b320802ac7048ae14ffb9"
+
 react-redux@^5.0.7:
   version "5.0.7"
   resolved "http://registry.npmjs.org/react-redux/-/react-redux-5.0.7.tgz#0dc1076d9afb4670f993ffaef44b8f8c1155a4c8"

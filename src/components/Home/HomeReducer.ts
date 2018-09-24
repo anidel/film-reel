@@ -1,24 +1,33 @@
 import { Cmd, loop, Loop } from "redux-loop";
 import {
   fetchMovieDbConfiguration,
-  IMovieDBConfigurationSchema
+  IMovieDBConfigurationSchema,
+  IMovieDBGenre,
+  fetchMovieDbGenres
 } from "src/api/movieDb";
 import {
   HomeAction,
   ON_INITIALISE,
   fetchMovieDbConfigurationFailed,
   fetchMovieDbConfigurationSuccess,
-  FETCH_MOVIE_DB_CONF_SUCCESS
+  FETCH_MOVIE_DB_CONF_SUCCESS,
+  fetchMovieDbGenresFailed,
+  fetchMovieDbGenresSuccess,
+  FETCH_MOVIE_DB_GENRES_SUCCESS
 } from "src/components/Home/HomeActions";
 
 export interface IHomeStore {
-  initialising: boolean;
+  loadingConfiguration: boolean;
+  loadingGenres: boolean;
   movieDbConfiguration: IMovieDBConfigurationSchema | null;
+  genres: IMovieDBGenre[];
 }
 
 const initialState: IHomeStore = {
-  initialising: false,
-  movieDbConfiguration: null
+  loadingConfiguration: false,
+  loadingGenres: false,
+  movieDbConfiguration: null,
+  genres: []
 };
 
 export const homeReducer = function reduce(
@@ -30,24 +39,35 @@ export const homeReducer = function reduce(
       return loop<IHomeStore, HomeAction>(
         {
           ...state,
-          initialising: true
+          loadingConfiguration: true,
+          loadingGenres: true
         },
-        Cmd.run(fetchMovieDbConfiguration, {
-          args: [],
-          failActionCreator: fetchMovieDbConfigurationFailed,
-          successActionCreator: fetchMovieDbConfigurationSuccess
-        })
+        Cmd.list([
+          Cmd.run(fetchMovieDbConfiguration, {
+            args: [],
+            failActionCreator: fetchMovieDbConfigurationFailed,
+            successActionCreator: fetchMovieDbConfigurationSuccess
+          }),
+          Cmd.run(fetchMovieDbGenres, {
+            args: [],
+            failActionCreator: fetchMovieDbGenresFailed,
+            successActionCreator: fetchMovieDbGenresSuccess
+          })
+        ])
       );
     }
     case FETCH_MOVIE_DB_CONF_SUCCESS: {
-      const configuration = action.payload.configuration;
-
-      console.log("confi:", configuration);
-
       return {
         ...state,
-        initialising: false,
-        movieDbConfiguration: configuration
+        loadingConfiguration: false,
+        movieDbConfiguration: action.payload.configuration
+      };
+    }
+    case FETCH_MOVIE_DB_GENRES_SUCCESS: {
+      return {
+        ...state,
+        loadingConfiguration: false,
+        genres: action.payload.genres
       };
     }
     default:

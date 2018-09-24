@@ -2,7 +2,7 @@
 // I've extended it a bit, to pass in a `Loading` component
 
 import * as React from "react";
-import { SplashScreen } from "src/components/SplashScreen";
+import ReactLoading from "react-loading";
 
 // `loadable` is curried to decouple an `isLoading` check from the details of
 // component implementation
@@ -16,7 +16,11 @@ export default function loadable<P>(isLoading: (p: P) => boolean) {
   ): React.SFC<P> => {
     const LoadableComponent: React.SFC<P> = props => {
       if (isLoading(props)) {
-        return L ? <L {...(Lprops ? Lprops : {})} /> : <SplashScreen />;
+        return L ? (
+          <L {...(Lprops ? Lprops : {})} />
+        ) : (
+          <ReactLoading type={"cylon"} />
+        );
       }
       return <C {...props} />;
     };

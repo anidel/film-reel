@@ -9,6 +9,7 @@ import { MoviesComponent } from "src/components/Movies/MoviesComponent";
 import { IStore } from "src/store";
 import { onLoadDiscoverMovies } from "src/components/Movies/MoviesActions";
 import { connect } from "react-redux";
+import { getGenres } from "src/components/Home/HomeSelectors";
 
 interface IDispatchProps {
   onLoadDiscoverMovies(): void;
@@ -17,6 +18,7 @@ interface IDispatchProps {
 const mapStateToProps = (store: IStore): IMoviesProps => ({
   loading: getLoading(store),
   movies: getMovies(store),
+  genres: getGenres(store),
   error: getError(store)
 });
 

@@ -43,7 +43,16 @@ export interface IMovieDBMovieResponse {
   results: IMovieDBMovie[];
 }
 
-const getMovieDbUrlFor = (path: string): string =>
+export interface IMovieDBGenre {
+  id: number;
+  name: string;
+}
+
+export interface IMovieDBGenres {
+  genres: IMovieDBGenre[];
+}
+
+const fetchMovieDbUrlFor = (path: string): string =>
   resolve(
     MOVIE_DB_BASEURL,
     `${MOVIE_DB_API_VERSION}/${path}?api_key=${apiKey}`
@@ -54,7 +63,12 @@ function doFetch<T>(url: string): Promise<T> {
 }
 
 export const fetchMovieDbConfiguration = () =>
-  doFetch<IMovieDBConfigurationSchema>(getMovieDbUrlFor("configuration"));
+  doFetch<IMovieDBConfigurationSchema>(fetchMovieDbUrlFor("configuration"));
 
 export const fetchMovieDbDiscover = (args: string) =>
-  doFetch<IMovieDBMovieResponse>(getMovieDbUrlFor("discover/movie"));
+  doFetch<IMovieDBMovieResponse>(fetchMovieDbUrlFor("discover/movie"));
+
+export const fetchMovieDbGenres = () =>
+  doFetch<IMovieDBGenres>(fetchMovieDbUrlFor("genre/movie/list")).then(
+    response => response.genres
+  );

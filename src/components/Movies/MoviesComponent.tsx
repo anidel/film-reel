@@ -1,17 +1,19 @@
 import * as React from "react";
 import loadable from "../../decorators/loadable";
-import { IMovieDBMovie } from "../../api/movieDb";
+import { IMovieDBMovie, IMovieDBGenre } from "../../api/movieDb";
+import { Movie } from "./Movie";
 
 export interface IMoviesProps {
   loading: boolean;
   error: object | null;
   movies: IMovieDBMovie[];
+  genres: IMovieDBGenre[];
 }
 
-const SFCMoviesComponent: React.SFC<IMoviesProps> = ({ movies }) => (
+const SFCMoviesComponent: React.SFC<IMoviesProps> = ({ movies, genres }) => (
   <>
     {movies.map(movie => (
-      <div key={movie.id}>{movie.title}</div>
+      <Movie key={movie.id} movie={movie} genres={genres} />
     ))}
   </>
 );
