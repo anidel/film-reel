@@ -21,7 +21,7 @@ const MovieLayout = styled.div`
 const Title = styled.div`
   font-weight: 700;
   font-size: 16px;
-  margin-bottom: 5px;
+  margin-right: 10px;
 `;
 
 const Date = styled.div`
@@ -40,17 +40,33 @@ const MovieMetadata = styled.div`
   flex-direction: column;
   align-items: left;
   margin-left: 7px;
+  margin-right: 7px;
 `;
 
 const Bold = styled.span`
   font-weight: 600;
 `;
 
+const MovieHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+`;
+
+const Popularity = styled.span`
+  font-size: 10px;
+`;
+
 export const Movie: React.SFC<IMovieProps> = ({ movie, genres }) => (
   <MovieLayout>
     <MoviePoster movie={movie} />
     <MovieMetadata>
-      <Title>{movie.title}</Title>
+      <MovieHeader>
+        <Title>{movie.title}</Title>
+        <Popularity>{movie.vote_average}</Popularity>
+      </MovieHeader>
       <Date>
         <Bold>Released: </Bold>
         {movie.release_date}
