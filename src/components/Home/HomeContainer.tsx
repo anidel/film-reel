@@ -1,23 +1,33 @@
-import { connect } from 'react-redux'
-import { onInitialise } from 'src/components/Home/HomeActions';
-import HomeComponent, { IHomeProps } from 'src/components/Home/HomeComponent';
-import { getInitialising } from 'src/components/Home/HomeSelectors';
-import loadable from 'src/decorators/loadable';
-import { IStore } from 'src/store';
+import * as React from "react";
+import { connect } from "react-redux";
+import { onInitialise, HomeAction } from "src/components/Home/HomeActions";
+import { Home, IHomeProps } from "src/components/Home/HomeComponent";
+import { getInitialising } from "src/components/Home/HomeSelectors";
+import { IStore } from "src/store";
 
-type StateProps = Pick<IHomeProps, 'initialising'>
-type DispatchProps = Pick<IHomeProps, 'onInitialise'>
-
-const mapStateToProps = (state: IStore): StateProps => ({
-  initialising: getInitialising(state)
-})
-
-const mapDispatchToProps: DispatchProps = {
-  onInitialise
+interface IDispatchProps {
+  onInitialise(): HomeAction;
 }
 
+const mapStateToProps = (state: IStore): IHomeProps => ({
+  initialising: getInitialising(state)
+});
 
-export const HomeContainer = connect<StateProps, DispatchProps>(
+const mapDispatchToProps: IDispatchProps = {
+  onInitialise
+};
+
+class HomeComponent extends React.PureComponent<IHomeProps & IDispatchProps> {
+  public componentDidMount() {
+    this.props.onInitialise();
+  }
+
+  public render() {
+    return <Home {...this.props} />;
+  }
+}
+
+export const HomeContainer = connect<IHomeProps, IDispatchProps>(
   mapStateToProps,
   mapDispatchToProps
-)(loadable<IHomeProps>(props => props.initialising)(HomeComponent));
+)(HomeComponent);
